@@ -7,7 +7,8 @@ describe Pet do
       name: "Jake",
       species: :tiger
     }
-
+    $interval = 0
+    $puts_mode = false
     @default_pet = Pet.new
     @pet = Pet.new(@attributes)
   end
@@ -35,8 +36,81 @@ describe Pet do
       expect(@pet.respond_to?(:logger=)).to eq(false) 
     end
 
-    it "will sandbox" do 
+    it "pet loggers are seperate instances per model" do 
+      expect(@default_pet.logger == @pet.logger).to eq(false)
+    end
 
+  end
+
+  describe 'pet functionality' do
+
+    it "will play" do
+      expect(@pet.can_play?).to eq(true)
+      expect(@pet.play).to eq(true)
+      expect(@pet.energy == 80).to eq(true)
+    end
+
+    it "will sleep" do
+      @pet.play
+      @pet.play
+      expect(@pet.can_sleep?).to eq(true)
+      expect(@pet.rest).to eq(true)
+      expect(@pet.energy == 100).to eq(true)
+    end
+
+    it "will eat" do
+      @pet.play
+      expect(@pet.can_eat?).to eq(true)
+      expect(@pet.eat(20)).to eq(true)
+      expect(@pet.energy == 100).to eq(true)
+    end
+
+    it "will not play" do
+      @pet.energy = 10
+      expect(@pet.can_play?).to eq(false)
+      expect(@pet.play).to eq(false)
+    end
+
+    it "will not eat" do
+      @pet.energy = 100
+      expect(@pet.can_eat?).to eq(false)
+      expect(@pet.eat).to eq(false)
+    end
+
+    it "will not sleep" do
+      @pet.energy = 100
+      expect(@pet.can_sleep?).to eq(false)
+      expect(@pet.rest).to eq(false)
+    end
+  end
+
+  describe "pet boolean status checks" do
+
+    it "#can_play? will resolve default threshold" do
+      expect(@pet.can_play?).to eq(true)
+    end
+
+    it "#can_eat? will resolve default threshold" do
+      expect(@pet.can_eat?).to eq(false)
+    end
+
+    it "#can_sleep? will resolve default threshold" do
+      expect(@pet.can_sleep?).to eq(false)
+    end
+
+    it "#can_play? will resolve false if energy is below expected threshold" do
+      @pet.energy = 20
+      expect(@pet.can_play?).to eq(false)
+    end
+
+    it "#can_eat? will resolve true if energy is below expected threshold" do
+      @pet.energy = 20
+      expect(@pet.can_eat?).to eq(true)
+    end
+
+    it "#can_sleep? will resolve true if energy is below expected threshold" do
+      @pet.energy = 20
+      expect(@pet.can_sleep?).to eq(true)
     end
 
   end
