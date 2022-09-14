@@ -1,19 +1,24 @@
-module PetLogger
+class PetLogger
+  attr_accessor :pet
 
-  def self.playing(pet)
-    ap "#{pet.name} is playing...."
+  def initialize()
+    @pet = nil
   end
 
-  def self.finished_playing(pet)  
-    ap "#{pet.name} is done playing!"
+  def playing()
+    ap "#{@pet.name} is playing...."
   end
 
-  def self.sleeping(pet)
-    ap "#{pet.name} is sleeping..."
+  def finished_playing()  
+    ap "#{@pet.name} is done playing!"
   end
 
-  def self.finished_sleeping(pet)
-    ap "#{pet.name} is awake!"
+  def sleeping()
+    ap "#{@pet.name} is sleeping..."
+  end
+
+  def finished_sleeping()
+    ap "#{@pet.name} is awake!"
   end
 
 end
