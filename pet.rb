@@ -4,11 +4,11 @@ require_relative 'pet_logger'
 SLEEP_ENERGY = 40
 PLAY_ENERGY = 20
 
-PET_LOGGER = PetLogger.new()
 
 class Pet
 
   attr_accessor :name, :species, :is_sleeping, :energy
+  attr_reader :logger
 
   def initialize(attributes = {})
     @name = attributes[:name] ||= ""
@@ -16,7 +16,9 @@ class Pet
 
     @is_sleeping = false
     @energy = 100
-    PET_LOGGER.pet = self
+
+    @logger = PetLogger.new()
+    @logger.pet = self
   end
 
   def eat
@@ -24,11 +26,11 @@ class Pet
 
   def play
     if can_play?
-      PET_LOGGER.playing
+      @logger.playing
       sleep 2
       @energy -= PLAY_ENERGY
       normalize_max_energy
-      PET_LOGGER.finished_playing()
+      @logger.finished_playing()
       return true
     else
       ap "#{@name} is too tired to play..."
@@ -38,11 +40,11 @@ class Pet
 
   def rest
     if can_sleep?
-      PET_LOGGER.sleeping()
+      @logger.sleeping()
       sleep 2
       @energy += SLEEP_ENERGY
       normalize_max_energy
-      PET_LOGGER.finished_sleeping()
+      @logger.finished_sleeping()
       return true
     else
       ap "#{@name} is not tired."
@@ -77,11 +79,11 @@ class Pet
 
 end
 
-pet_attributes = {
-  name: "Jake",
-  species: :canine
-}
+# pet_attributes = {
+#   name: "Jake",
+#   species: :canine
+# }
 
-jake = Pet.new(pet_attributes)
-jake.play
+# jake = Pet.new(pet_attributes)
+# jake.play
 
