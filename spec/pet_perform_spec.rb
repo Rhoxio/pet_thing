@@ -24,6 +24,11 @@ describe PetPerform do
             it "will perform" do
                 expect(PetPerform.perform(@default_pair)).to eq(true)
             end
+
+            it "will not perform" do
+                @default_pair[:pet].energy = 0
+                expect(PetPerform.perform(@default_pair)).to eq(false)
+            end
         end
 
         describe 'custom' do
