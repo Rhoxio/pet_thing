@@ -9,6 +9,7 @@ describe PetPerform do
         @default_activity = Activity.new
         @default_pet = Pet.new
         @walk_activity = Activity.new({name: "Walk", energy: 15})
+        @run_activity = Activity.new({name: "", energy: 50})
         @default_pair = {
             pet: @default_pet,
             activity: @default_activity
@@ -36,9 +37,15 @@ describe PetPerform do
                 expect(PetPerform.perform(@custom_pair)).to eq(true)
             end
 
-            it "will not perform" do
-                @custom_pair[:pet].energy = 10
-                expect(PetPerform.perform(@custom_pair)).to eq(true)
+            it "will not perform at zero energy" do
+                @custom_pair[:pet].energy = 0
+                expect(PetPerform.perform(@custom_pair)).to eq(false)
+            end
+
+            it "will not perform at above zero energy" do 
+                @custom_pair[:pet].energy = 20
+                @custom_pair[:activity] = @run_activity
+                expect(PetPerform.perform(@custom_pair)).to eq(false)
             end
         end
     end

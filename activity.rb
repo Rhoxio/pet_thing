@@ -7,6 +7,6 @@ class Activity
         @name = attributes[:name] ||= "Nothing"
         @energy = attributes[:energy] ||= 0
         @energy = 50 if attributes[:energy] > 50
-        @eneergy = 0 if attributes[:energy] < 0
+        @energy = 0 if attributes[:energy] < 0
     end
 end
