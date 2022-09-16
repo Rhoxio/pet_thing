@@ -37,7 +37,7 @@ describe PetIngest do
                 expect(PetIngest.call(@custom_pair)).to eq(true)
             end
             it "energy will cap if over threshold" do
-                @custom_pair[:pet].energy = 80
+                @custom_pair[:pet].energy = 60
                 @custom_pair[:food].energy = 50
                 expect(PetIngest.call(@custom_pair)).to eq(true)
                 expect(@custom_pair[:pet].energy).to eq(100)

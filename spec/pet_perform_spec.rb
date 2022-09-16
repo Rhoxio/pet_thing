@@ -21,10 +21,22 @@ describe PetPerform do
 
     describe "functionality" do
         describe 'default' do
-            it "will call" do
+            it "will perform" do
                 expect(PetPerform.perform(@default_pair)).to eq(true)
             end
         end
+
+        describe 'custom' do
+            it "will perform" do
+                expect(PetPerform.perform(@custom_pair)).to eq(true)
+            end
+
+            it "will not perform" do
+                @custom_pair[:pet].energy = 10
+                expect(PetPerform.perform(@custom_pair)).to eq(true)
+            end
+        end
     end
+
 
 end

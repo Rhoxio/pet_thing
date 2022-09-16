@@ -37,11 +37,11 @@ class Pet
     end
   end
 
-  def play
-    if can_play?
+  def play(given_energy = 0)
+    if can_play?(given_energy)
       @logger.playing
       sleep $interval
-      @energy -= PLAY_ENERGY
+      @energy -= given_energy
       normalize_max_energy
       @logger.finished_playing
       return true
@@ -77,8 +77,8 @@ class Pet
     return false
   end
 
-  def can_play?
-    return true if @energy > 30
+  def can_play?(given_energy = 0)
+    return true if @energy > given_energy
     return false
   end
 

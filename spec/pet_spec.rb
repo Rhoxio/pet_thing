@@ -7,6 +7,7 @@ describe Pet do
       name: "Jake",
       species: :tiger
     }
+    @play_energy = 20
     $interval = 0
     $puts_mode = false
     @default_pet = Pet.new
@@ -47,26 +48,26 @@ describe Pet do
     it "will play" do
       expect(@pet.can_play?).to eq(true)
       expect(@pet.play).to eq(true)
-      expect(@pet.energy == 80).to eq(true)
+      expect(@pet.energy == 100).to eq(true)
     end
 
     it "will sleep" do
-      @pet.play
-      @pet.play
+      @pet.play(@play_energy)
+      @pet.play(@play_energy)
       expect(@pet.can_sleep?).to eq(true)
       expect(@pet.rest).to eq(true)
       expect(@pet.energy == 100).to eq(true)
     end
 
     it "will eat" do
-      @pet.play
+      @pet.play(@play_energy)
       expect(@pet.can_eat?).to eq(true)
       expect(@pet.eat(20)).to eq(true)
       expect(@pet.energy == 100).to eq(true)
     end
 
     it "will not play" do
-      @pet.energy = 10
+      @pet.energy = 0
       expect(@pet.can_play?).to eq(false)
       expect(@pet.play).to eq(false)
     end
@@ -99,7 +100,7 @@ describe Pet do
     end
 
     it "#can_play? will resolve false if energy is below expected threshold" do
-      @pet.energy = 20
+      @pet.energy = 0
       expect(@pet.can_play?).to eq(false)
     end
 
