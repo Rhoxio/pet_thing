@@ -9,11 +9,13 @@ describe PetPerform do
         @default_activity = Activity.new
         @default_pet = Pet.new
         @walk_activity = Activity.new({name: "Walk", energy: 15})
-        @run_activity = Activity.new({name: "", energy: 50})
+        @run_activity = Activity.new({name: "", energy: 49})
+
         @default_pair = {
             pet: @default_pet,
             activity: @default_activity
         }
+        
         @custom_pair = {
             pet: @default_pet,
             activity: @walk_activity
