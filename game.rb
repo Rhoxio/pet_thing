@@ -24,4 +24,32 @@ class Game
     @activities.select {|activity| activity.name == activity_name }[0]
   end
 
+  def execute_prompt()
+  end
+
+  def start()
+    loop do
+      user_input = gets.chomp.downcase
+      ap user_input
+      # case user_input
+      # when "status"
+      #   @current_pet.logger.pet_status
+      # else
+      #   ap "Incorrect command given"
+      # end
+      commands[user_input].call
+    end
+  end
+
+  def commands()
+    {
+      "status": Proc.new{@current_pet.logger.pet_status}
+    }
+  end
+
 end
+
+pet = Pet.new({name: "Jake", species: :horse})
+game = Game.new
+game.current_pet = pet
+game.start

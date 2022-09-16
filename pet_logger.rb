@@ -43,4 +43,8 @@ class PetLogger
      ap "#{@pet.name} is not hungry." if $puts_mode
   end
 
+  def pet_status()
+      ap "Pets name: #{@pet.name}. Pets energy: #{@pet.energy}"
+  end
+
 end
