@@ -43,13 +43,14 @@ describe Game do
 
   describe "start function" do
 
-    # it "will present welcome message" do
-    #   game = Game.new
-    #   game.start
-    #   game.choice = "welcome"
-    #   expect do
-    #   end.to output("Welcome to Tomogotchi Land").to_stdout
-    # end
+    it "will present welcome message" do
+      # game = Game.new
+      # game.start
+      # $stdin = StringIO.new("list\n")
+      # ap 
+      # expect do
+      # end.to output("Welcome to Tomogotchi Land").to_stdout
+    end
     
   end
   
@@ -68,6 +69,28 @@ describe Game do
 
       expect(@game.current_pet.energy).to eq(90)
 
+    end
+
+  end
+
+  describe "destructive actions" do 
+
+    it "will feed the pet" do 
+      @game.current_pet.energy = 50
+      @game.commands("Fig")["feed"].call
+      expect(@game.current_pet.energy).to eq(60)
+    end
+
+    it "will feed the pet" do 
+      @game.current_pet.energy = 50
+      @game.commands("Walk")["play"].call
+      expect(@game.current_pet.energy).to eq(45)
+    end
+
+    it "will not work without foods array being poulated" do 
+      @game.foods = []
+      expect(@game.foods.length).to eq(0)
+      expect{@game.commands("Fig")["feed"].call}.to raise_error(NoMethodError)
     end
 
   end
