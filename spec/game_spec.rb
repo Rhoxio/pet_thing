@@ -87,4 +87,21 @@ describe Game do
     end
   end
 
+  describe "rest actions" do
+    it "will rest" do
+      @game.current_pet.energy = 60
+      @game.rest
+
+      expect(@game.current_pet.energy).to eq(100)
+    end
+
+    it "will not rest" do
+      @game.current_pet.energy = 61
+      @game.rest
+
+      expect(@game.current_pet.energy).to eq(61)
+    end
+
+  end
+
 end
