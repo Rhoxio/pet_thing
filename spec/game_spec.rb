@@ -1,7 +1,8 @@
 require_relative '../game.rb'
+require 'stringio'
 
 describe Game do 
-
+  
   before(:each) do
 
     @game = Game.new
@@ -20,6 +21,7 @@ describe Game do
 
     @game.foods = @foods
     @game.activities = @activities
+   
   end
 
   describe "initial state" do 
@@ -36,6 +38,24 @@ describe Game do
     end
 
   end
+
+  # describe "commands prof actions" do
+  #   it "will present welcome message" do
+  #     expect(@game.commands["welcome"].call).to eq("Welcome to Tomogotchi Land")
+  #   end
+  # end
+
+  describe "start function" do
+
+    it "will present welcome message" do
+      game = Game.new
+      allow_any_instance_of(Game).to receive(:user_input).and_return('welcome')
+      expect(game.start)
+    end
+    
+  end
+  
+
 
   describe "food actions" do 
     it "will select a single food" do
