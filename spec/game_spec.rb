@@ -4,7 +4,8 @@ require 'stringio'
 describe Game do 
   
   before(:each) do
-
+    $interval = 0
+    
     @game = Game.new
 
     @pet = Pet.new({name: "Jake", species: :horse})
