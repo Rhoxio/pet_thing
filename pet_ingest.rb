@@ -4,6 +4,7 @@ module PetIngest
         pet = attributes[:pet]
         food = attributes[:food]
         energy = food.energy
-        return pet.eat(energy)
+        food_name = food.name
+        return pet.eat(energy, food_name)
     end
 end

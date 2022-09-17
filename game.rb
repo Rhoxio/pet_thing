@@ -18,45 +18,29 @@ class Game
 
   end
 
-  def select_food(food_name)
-    @foods.select do |food| 
-      food.name == food_name 
-    end.first
-  end
-
   def select_activity(activity_name)
     @activities.select {|activity| activity.name == activity_name }[0]
-  end
-
-  def execute_prompt()
   end
 
   def feed_pet(food_name)
     selected_food = @foods.select do |food|
       food.name.downcase == food_name
     end.first
-    if @current_pet.energy == 100
-      @current_pet.logger.cant_eat
-    else
-      @current_pet.logger.eating
-      PetIngest.call({pet: @current_pet, food: selected_food})
-      @current_pet.logger.finished_eating
-      commands["status"].call
-    end
+    PetIngest.call({pet: @current_pet, food: selected_food})
+    commands["status"].call
   end
 
   def play_pet(activity_name)
     selected_activity = @activities.select do |activity|
       activity.name.downcase == activity_name
     end.first
-    if @current_pet.energy <= selected_activity.energy
-      @current_pet.logger.cant_play
-    else
-      @current_pet.logger.playing
-      PetPerform.perform({pet: @current_pet, activity: selected_activity})
-      @current_pet.logger.finished_playing
-      commands["status"].call
-    end
+    PetPerform.perform({pet: @current_pet, activity: selected_activity})
+    commands["status"].call
+  end
+
+  def rest()
+    @current_pet.rest
+    commands["status"].call
   end
 
   def start()
@@ -71,6 +55,7 @@ class Game
         play_pet(@choice)
       else
       commands[@choice].call if !!commands[@choice]
+      commands[""].call if !commands[@choice]
       break if @choice == "exit"
       end
     end
@@ -81,30 +66,27 @@ class Game
     {
       "status"=> Proc.new{@current_pet.logger.pet_status},
       "welcome"=> Proc.new{ap "Welcome to Tomogotchi Land"},
-      "menu"=> Proc.new{ap "Here's the menu" and @foods.each {|food| puts "Name: #{food.name} : Energy: #{food.energy}"} and ap "Select menu item to feed your pet"},
+      "menu"=> Proc.new{list_menu},
       "activities"=> Proc.new{list_activities},
+      "rest"=> Proc.new{rest},
       "exit"=> Proc.new{ap "Thanks for coming to Tomogotchi Land"},
-      ""=> Proc.new{ap "Please make a choice between status, welcome, menu, activities, and exit"}
+      ""=> Proc.new{ap "Please make a choice between status, welcome, menu, activities, rest and exit"}
     }
   end
 
-  def feed_command()
-
-    
-  
+  def list_menu()
+    ap "Here's the menu"
+    ap "Please select food below by typing the name of it"
+    @foods.each {|food| ap "Name: #{food.name} : Energy: #{food.energy}"}
   end
 
   def list_activities()
-    selected_activity = @activities.select do |activity|
+    selected_activities = @activities.select do |activity|
       activity.energy < @current_pet.energy
     end
-    ap "Please select an activity below"
-    selected_activity.each {|activity| ap "Activity: #{activity.name} | Energy: #{activity.energy}"}
+    ap "Please select an activity below by typing the name of it"
+    selected_activities.each {|activity| ap "Activity: #{activity.name} | Energy: #{activity.energy}"}
   end
-
-  private 
-
-
 end
 
 pet = Pet.new({name: "Jake", species: :horse})

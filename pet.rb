@@ -23,9 +23,9 @@ class Pet
     @logger.pet = self
   end
 
-  def eat(given_energy = 0)
+  def eat(given_energy = 0, food_name = "")
     if can_eat?
-      @logger.eating
+      @logger.eating(food_name)
       sleep $interval
       @energy += given_energy
       normalize_max_energy
@@ -37,16 +37,16 @@ class Pet
     end
   end
 
-  def play(given_energy = 0)
+  def play(given_energy = 0, activity_name = "")
     if can_play?(given_energy)
-      @logger.playing
+      @logger.playing(activity_name)
       sleep $interval
       @energy -= given_energy
       normalize_max_energy
-      @logger.finished_playing
+      @logger.finished_playing(activity_name)
       return true
     else
-      @logger.cant_play
+      @logger.cant_play(activity_name)
       return false
     end
   end

@@ -4,7 +4,8 @@ module PetPerform
         pet = attributes[:pet]
         activity = attributes[:activity]
         energy = activity.energy
-        return pet.play(energy)
+        activity_name = activity.name
+        return pet.play(energy, activity_name)
     end
 end
      

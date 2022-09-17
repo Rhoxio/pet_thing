@@ -7,16 +7,16 @@ class PetLogger
     @pet = nil
   end
 
-  def playing()
-     ap "#{@pet.name} is playing...." if $puts_mode
+  def playing(name)
+     ap "#{@pet.name} doing a #{name.downcase}" if $puts_mode
   end
 
-  def finished_playing()  
-     ap "#{@pet.name} is done playing!" if $puts_mode
+  def finished_playing(name)  
+     ap "#{@pet.name} is done with their #{name.downcase}!" if $puts_mode
   end
 
-  def cant_play()
-     ap "#{@pet.name} is too tired to play." if $puts_mode
+  def cant_play(name)
+     ap "#{@pet.name} is too tired to #{name.downcase}." if $puts_mode
   end
 
   def sleeping()
@@ -31,8 +31,8 @@ class PetLogger
      ap "#{@pet.name} is not tired." if $puts_mode
   end
 
-  def eating()
-     ap "#{@pet.name} is eating..." if $puts_mode
+  def eating(name)
+     ap "#{@pet.name} is eating their #{name.downcase}" if $puts_mode
   end
 
   def finished_eating()
