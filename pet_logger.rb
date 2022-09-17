@@ -16,7 +16,7 @@ class PetLogger
   end
 
   def cant_play(name)
-     ap "#{@pet.name} is too tired to #{name.downcase}." if $puts_mode
+     ap "#{@pet.name} is too tired to do a #{name.downcase}." if $puts_mode
   end
 
   def sleeping()

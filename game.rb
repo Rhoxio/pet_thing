@@ -7,7 +7,7 @@ require 'stringio'
 
 class Game
 
-  attr_accessor :current_pet, :foods, :activities, :output, :input
+  attr_accessor :current_pet, :foods, :activities, :choice
 
   def initialize
     @current_pet = nil
@@ -24,7 +24,7 @@ class Game
 
   def feed_pet(food_name)
     selected_food = @foods.select do |food|
-      food.name.downcase == food_name
+      food.name.downcase == food_name.downcase
     end.first
     PetIngest.call({pet: @current_pet, food: selected_food})
     commands["status"].call
@@ -32,7 +32,7 @@ class Game
 
   def play_pet(activity_name)
     selected_activity = @activities.select do |activity|
-      activity.name.downcase == activity_name
+      activity.name.downcase == activity_name.downcase
     end.first
     PetPerform.perform({pet: @current_pet, activity: selected_activity})
     commands["status"].call
@@ -89,10 +89,10 @@ class Game
   end
 end
 
-pet = Pet.new({name: "Jake", species: :horse})
-game = Game.new
-game.current_pet = pet
-game.current_pet.energy = 80
-game.foods = [Food.new(name: "Burger", energy: 20)]
-game.activities = [Activity.new(name: "Run", energy: 40), Activity.new(name: "Marathon", energy: 50), Activity.new(name: "Walk", energy: 10)]
-game.start
+# pet = Pet.new({name: "Jake", species: :horse})
+# game = Game.new
+# game.current_pet = pet
+# game.current_pet.energy = 80
+# game.foods = [Food.new(name: "Burger", energy: 20), Food.new(name: "Sushi", energy: 30)]
+# game.activities = [Activity.new(name: "Run", energy: 40), Activity.new(name: "Marathon", energy: 50), Activity.new(name: "Walk", energy: 10)]
+# game.start

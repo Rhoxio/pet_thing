@@ -21,6 +21,7 @@ describe Game do
 
     @game.foods = @foods
     @game.activities = @activities
+    @game.current_pet = @pet
    
   end
 
@@ -39,33 +40,50 @@ describe Game do
 
   end
 
-  # describe "commands prof actions" do
-  #   it "will present welcome message" do
-  #     expect(@game.commands["welcome"].call).to eq("Welcome to Tomogotchi Land")
-  #   end
-  # end
-
   describe "start function" do
 
-    it "will present welcome message" do
-      game = Game.new
-      allow_any_instance_of(Game).to receive(:user_input).and_return('welcome')
-      expect(game.start)
-    end
+    # it "will present welcome message" do
+    #   game = Game.new
+    #   game.start
+    #   game.choice = "welcome"
+    #   expect do
+    #   end.to output("Welcome to Tomogotchi Land").to_stdout
+    # end
     
   end
   
-
-
   describe "food actions" do 
-    it "will select a single food" do
-      expect(@game.select_food("Fig").name).to eq("Fig")
+    it "will eat food" do
+      
+      @game.current_pet.energy = 40
+      @game.feed_pet(@game.foods[0].name)
+
+      expect(@game.current_pet.energy).to eq(50)
     end
+
+    it "will not eat food" do
+      @game.current_pet.energy = 90
+      @game.feed_pet(@game.foods[0].name)
+
+      expect(@game.current_pet.energy).to eq(90)
+
+    end
+
   end
 
   describe "activity actions" do 
-    it "will select a single activity" do
-      expect(@game.select_activity("Walk").name).to eq("Walk")
+    it "will perform activity" do
+      @game.current_pet.energy = 6
+      @game.play_pet(@game.activities[0].name)
+
+      expect(@game.current_pet.energy).to eq(1)
+    end
+
+    it "will not perform activity" do
+      @game.current_pet.energy = 1
+      @game.play_pet(@game.activities[0].name)
+
+      expect(@game.current_pet.energy).to eq(1)
     end
   end
 
