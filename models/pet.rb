@@ -1,12 +1,3 @@
-require 'awesome_print'
-require_relative 'pet_logger'
-
-$interval = 2
-SLEEP_ENERGY = 40
-PLAY_ENERGY = 20
-EAT_ENERGY = 20
-
-
 class Pet
 
   attr_accessor :name, :species, :is_sleeping, :energy
@@ -26,9 +17,8 @@ class Pet
   def eat(given_energy = 0, food_name = "")
     if can_eat?
       @logger.eating(food_name)
-      sleep $interval
       @energy += given_energy
-      normalize_max_energy
+      normalize_energy
       @logger.finished_eating
       return true
     else 
@@ -40,9 +30,8 @@ class Pet
   def play(given_energy = 0, activity_name = "")
     if can_play?(given_energy)
       @logger.playing(activity_name)
-      sleep $interval
       @energy -= given_energy
-      normalize_max_energy
+      normalize_energy
       @logger.finished_playing(activity_name)
       return true
     else
@@ -54,9 +43,8 @@ class Pet
   def rest
     if can_sleep?
       @logger.sleeping
-      sleep $interval
-      @energy += SLEEP_ENERGY
-      normalize_max_energy
+      @energy += $rest_energy
+      normalize_energy
       @logger.finished_sleeping
       return true
     else
@@ -68,12 +56,12 @@ class Pet
   # _____________________
 
   def can_eat?
-    return true if @energy <= (max_energy - EAT_ENERGY)
+    return true if @energy <= ($energy_limits[:pet] - $eat_energy)
     return false
   end
 
   def can_sleep?
-    return true if @energy <= (max_energy - SLEEP_ENERGY)
+    return true if @energy <= ($energy_limits[:pet] - $rest_energy)
     return false
   end
 
@@ -84,12 +72,9 @@ class Pet
 
   private
 
-  def max_energy
-    100
-  end
-
-  def normalize_max_energy
-    @energy = max_energy if @energy > max_energy
+  def normalize_energy
+    @energy = $energy_limits[:pet] if @energy > $energy_limits[:pet]
+    @energy = 0 if @energy < 0
   end
 
 end

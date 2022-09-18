@@ -1,10 +1,7 @@
-require_relative '../food.rb'
-
 describe Food do 
 
     before(:each) do 
         @default_food = Food.new
-        @energy_limit = 50
     end
 
     describe 'initial state' do

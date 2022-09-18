@@ -1,11 +1,6 @@
-require_relative '../game.rb'
-require 'stringio'
-
 describe Game do 
   
-  before(:each) do
-    $interval = 0
-    
+  before(:each) do    
     @game = Game.new
 
     @pet = Pet.new({name: "Jake", species: :horse})

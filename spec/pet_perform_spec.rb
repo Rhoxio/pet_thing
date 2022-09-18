@@ -1,7 +1,3 @@
-require_relative '../activity.rb'
-require_relative '../pet.rb'
-require_relative '../pet_perform.rb'
-
 describe PetPerform do
 
     before(:each) do
@@ -9,7 +5,7 @@ describe PetPerform do
         @default_activity = Activity.new
         @default_pet = Pet.new
         @walk_activity = Activity.new({name: "Walk", energy: 15})
-        @run_activity = Activity.new({name: "", energy: 49})
+        @run_activity = Activity.new({name: "Trot", energy: 49})
 
         @default_pair = {
             pet: @default_pet,
