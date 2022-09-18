@@ -1,5 +1,3 @@
-require_relative '../pet.rb'
-
 describe Pet do
 
   before(:each) do 
@@ -8,8 +6,6 @@ describe Pet do
       species: :tiger
     }
     @play_energy = 20
-    $interval = 0
-    $puts_mode = false
     @default_pet = Pet.new
     @pet = Pet.new(@attributes)
   end

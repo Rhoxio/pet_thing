@@ -1,5 +1,3 @@
-require_relative '../activity.rb'
-
 describe Activity do 
   describe "errors" do 
 
@@ -16,7 +14,7 @@ describe Activity do
     it "will contain correct data in initial state" do 
       activity = Activity.new
       expect(activity.energy).to eq(0)
-      expect(activity.name).to eq("")
+      expect(activity.name).to eq("Stay")
     end
 
     it "will contain correct data in custom state" do 

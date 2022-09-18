@@ -1,7 +1,3 @@
-require_relative '../food.rb'
-require_relative '../pet.rb'
-require_relative '../pet_ingest.rb'
-
 describe PetIngest do 
 
     before(:each) do 
