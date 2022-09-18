@@ -26,11 +26,14 @@ describe Food do
         it "will not accept short names" do 
             expect{Food.new({name: "A", energy: 5})}.to raise_error(ArgumentError)
         end
-    end
 
-    describe 'invalid states' do 
         it "will not accept energy over max" do 
             expect{Food.new({name: "Artichoke", energy: 55})}.to raise_error(ArgumentError)
-        end        
+        end
+        
+        it "will not accept energy under min" do
+            expect{Food.new({name: "", energy: -1})}.to raise_error(ArgumentError)
+        end
     end
+
 end

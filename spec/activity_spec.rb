@@ -25,4 +25,6 @@ describe Activity do
       expect(activity.name).to eq("Walk")
     end    
   end
+
+
 end

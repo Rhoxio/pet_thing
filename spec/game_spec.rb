@@ -5,7 +5,7 @@ describe Game do
   
   before(:each) do
     $interval = 0
-    
+
     @game = Game.new
 
     @pet = Pet.new({name: "Jake", species: :horse})
@@ -126,6 +126,21 @@ describe Game do
       expect(@game.current_pet.energy).to eq(61)
     end
 
+  end
+
+  describe "crud actions" do
+    it "will add pet" do
+      new_pet = Pet.new({name: "Pikachu", species: :mouse})
+      @game.add_pet(new_pet)
+      ap @game
+      expect(@game.pets.include?(new_pet)).to eq(true)
+    end
+
+    it "has pet. will find duplicates" do
+      new_pet = Pet.new({name: "Pikachu", species: :mouse})
+      @game.pets << new_pet
+      expect(@game.has_pet?(new_pet)).to eq(true)
+    end
   end
 
 end
