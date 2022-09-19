@@ -38,19 +38,21 @@ describe Game do
 
   describe "start function" do
 
-    it "will present welcome message" do
-      # game = Game.new
-      # game.start
-      # $stdin = StringIO.new("list\n")
-      # ap 
-      # expect do
-      # end.to output("Welcome to Tomogotchi Land").to_stdout
-    end
+    # it "will present welcome message" do
+    #   allow(@game).to receive(:gets).and_return("exit")
+    #   expect(@game.start).to eq(true)
+    # end
     
   end
   
   describe "food actions" do 
     it "will eat food" do
+
+      # data = {
+      #   pet: @current_pet,
+      #   foods: @foods,
+      #   food_name: 
+      # }      
       
       @game.current_pet.energy = 40
       @game.feed_pet(@game.foods[0].name)
@@ -63,7 +65,6 @@ describe Game do
       @game.feed_pet(@game.foods[0].name)
 
       expect(@game.current_pet.energy).to eq(90)
-
     end
 
   end
@@ -82,11 +83,12 @@ describe Game do
       expect(@game.current_pet.energy).to eq(45)
     end
 
-    it "will not work without foods array being poulated" do 
-      @game.foods = []
-      expect(@game.foods.length).to eq(0)
-      expect{@game.commands("Fig")["feed"].call}.to raise_error(NoMethodError)
-    end
+    # Was able to take this out as the event is being delegated and warned about instead.
+    # it "will not work without foods array being poulated" do 
+    #   @game.foods = []
+    #   expect(@game.foods.length).to eq(0)
+    #   expect{@game.commands("Fig")["feed"].call}.to raise_error(NoMethodError)
+    # end
 
   end
 
@@ -121,6 +123,26 @@ describe Game do
       expect(@game.current_pet.energy).to eq(61)
     end
 
+  end
+
+  describe "utility methods" do 
+    it "will correctly detetc back to menu commands" do 
+      expect(@game.back_to_menu?("home")).to eq(true)
+      expect(@game.back_to_menu?("menu")).to eq(true)
+    end
+
+    it "will correctly detect valid commands" do 
+      expect(@game.is_valid_command?("status")).to eq(true)
+    end
+
+    it "will correctly detect exit command" do 
+      expect(@game.will_exit?("exit")).to eq(true)
+      expect(@game.will_exit?("home")).to eq(false)
+    end
+
+    # it "will sandbox for me" do 
+
+    # end
   end
 
 end

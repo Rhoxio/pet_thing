@@ -13,3 +13,6 @@ Dried up the validator code, removed parends on method names, fixed tests, and s
 
 ### Kevin's Changes MK III
 Fixed up logging and added clarity to the naming conventions around actions. Switched 'menu' to a return to menu action and made it into the 'foods' command instead. Added more explicit logging and the option to escape from the food making process by typing 'exit'. Added 'bars' for spacing clarity. 
+
+### Kevin's Changes MK IV
+Added intercafes to feeding pet and some better logger functionality. Moved a lot of the code around to keep a cleaner separation of concerns in the Game model. 

@@ -16,10 +16,12 @@ class Game
   end
 
   def feed_pet(food_name)
-    selected_food = @foods.select do |food|
-      food.name.downcase == food_name.downcase
-    end.first
-    PetIngest.call({pet: @current_pet, food: selected_food})
+    data = {
+      pet: @current_pet,
+      foods: @foods,
+      food_name: food_name
+    }
+    GameFoods.feed(data)
     commands["status"].call
   end
 
@@ -58,32 +60,30 @@ class Game
     input == "exit"
   end
 
+  def is_valid_command?(input)
+    commands.keys.include?(input)
+  end
+
   def create_food
     GameLogger.prompt_food_name
     food_name = take_user_input.capitalize
-
     return return_to_main_menu if back_to_menu?(food_name)
 
     GameLogger.prompt_food_energy(food_name)
-    energy_value = take_user_input.to_i
-
-    values = {
+    energy_value = take_user_input.to_i  
+    
+    food_values = {
       name: food_name,
       energy: energy_value
-    }
+    }          
 
-    begin
-      food = Food.new(values)
-    rescue => e
-      GameLogger.food_not_created(e)
-
-      create_food
-    else
-      @foods << food
-      GameLogger.food_added(food)
+    if GameFoods.create(self, food_values)
       commands["actions"].call
-      return true      
+      return true
+    else
+      create_food
     end
+      
     
   end
 
@@ -103,9 +103,13 @@ class Game
       else
         commands[choice].call if !!commands[choice]
         commands[""].call if !commands[choice]
-        abort if choice == "exit"
+        stop if choice == "exit"
       end
     end
+  end
+
+  def stop
+    abort
   end
 
   def commands(args = nil)
@@ -121,7 +125,7 @@ class Game
       "foods"=> Proc.new{list_foods},
       "activities"=> Proc.new{list_activities},
       "rest"=> Proc.new{rest},
-      "exit"=> Proc.new{GameLogger.exiting && abort},
+      "exit"=> Proc.new{GameLogger.exiting && stop},
       ""=> Proc.new{GameLogger.actions}
     }
   end

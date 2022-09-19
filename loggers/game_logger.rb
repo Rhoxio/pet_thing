@@ -58,4 +58,8 @@ module GameLogger
     puts "Shutting down the game. Thanks for playing!".green
   end
 
+  def self.food_missing
+    puts "The selected food does not exist - try running 'add food' to add it first.".red
+  end
+
 end
