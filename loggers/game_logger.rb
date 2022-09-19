@@ -1,33 +1,65 @@
 module GameLogger
 
+  # Pet
+
+  def self.prompt_pet_name
+    puts "Enter a name for the new pet:".blue
+  end
+
+  def self.pet_not_created(error)
+    puts "The pet was not able to be created:".red
+    p error
+    puts "If you wish to return to the main menu, input 'exit'".red
+  end
+
+  def self.prompt_pet_species
+    puts "Enter the species of the pet (e.g. dog, cat, horse, chicken):".blue
+  end  
+
+  def self.current_pet_set(pet)
+    puts "#{pet.name} with an energy level of #{pet.energy} of the species #{pet.species.to_s} is now the current pet."
+  end
+
+  def self.display_pet(pet)
+    puts "#{pet.name} with an energy level of #{pet.energy} of the species #{pet.species.to_s}"
+  end
+
+  def self.pet_added(pet)
+    puts "#{pet.name} with an energy level of #{pet.energy} of the species #{pet.species.to_s} has been added!".green
+    self.bar
+  end
+
+  def self.list_pets(pets)
+    pets.each {|pet| puts "#{pet.name} the #{pet.species.to_s} | Energy: #{pet.energy}".blue}
+  end
+
+  def self.pet_selection(pets)
+    puts "Select a pet by name from the list below:\n"
+    self.list_pets(pets)
+  end
+  # Food 
+
   def self.prompt_food_name
     puts "Enter a name for a food:".blue
-  end
+  end  
 
   def self.prompt_food_energy(food_name)
     puts "Enter an energy level for the #{food_name}:".blue
-  end
+  end  
 
   def self.food_added(food)
     puts "#{food.name} with an energy level of #{food.energy} has been added!".green
     self.bar
   end
 
-  def self.food_not_created(e)
+  def self.food_not_created(error)
     puts "Food was not able to be created:".red
-    p e
+    p error
     puts "If you wish to return to the main menu, input 'exit'".red
   end
 
-  def self.return_to_menu
-    puts "Returning you to main menu...".blue
-    self.bar
-  end
-
-  def self.actions
-    puts "Available commands are:\n\nstatus\nwelcome\nactivities\nfoods\nadd food\nexit\n".green
-    puts "You can always return to this menu with the 'menu' or 'home' command.".green
-    puts self.bar
+  def self.food_missing
+    puts "The selected food does not exist - try running 'add food' to add it first.".red
   end
 
   def self.list_foods(foods)
@@ -35,6 +67,8 @@ module GameLogger
     foods.each {|food| puts "Name: #{food.name}, Energy: #{food.energy}".blue }
     puts "Please select food below by typing the name of it".green
   end
+
+  # Activities
 
   def self.list_activities(available, unavailable)
     puts "Please select an activity below by inputting the name of it:\n".blue
@@ -50,16 +84,27 @@ module GameLogger
     end
   end
 
-  def self.bar
-    puts "~~~~~~~~~~~~~~~~~~~~"
+  # Game Actions
+
+  def self.return_to_menu
+    puts "Returning you to main menu...".blue
+    self.bar
+  end
+
+  def self.actions
+    puts "Available commands are:\n\nstatus\nwelcome\nactivities\nfoods\npets\nselect active pet\nadd food\nadd pet\nexit\n".green
+    puts "You can always return to this menu with the 'menu' or 'home' command.".green
+    puts self.bar
   end
 
   def self.exiting
     puts "Shutting down the game. Thanks for playing!".green
   end
 
-  def self.food_missing
-    puts "The selected food does not exist - try running 'add food' to add it first.".red
+  # Other
+
+  def self.bar
+    puts "~~~~~~~~~~~~~~~~~~~~"
   end
 
 end

@@ -16,3 +16,7 @@ Fixed up logging and added clarity to the naming conventions around actions. Swi
 
 ### Kevin's Changes MK IV
 Added intercafes to feeding pet and some better logger functionality. Moved a lot of the code around to keep a cleaner separation of concerns in the Game model. 
+
+
+### Kevin's Changes MK V
+Moved things around, set up current pet setting abilities, set up more loggers, pulled game's foods and pets actions into interfaces, renamed some actions for clarity, wrote tests for interfaces, messed with some control flow for existence validation logic. 

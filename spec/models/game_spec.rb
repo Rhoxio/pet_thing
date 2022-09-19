@@ -95,14 +95,14 @@ describe Game do
   describe "activity actions" do 
     it "will perform activity" do
       @game.current_pet.energy = 6
-      @game.play_pet(@game.activities[0].name)
+      @game.do_activity(@game.activities[0].name)
 
       expect(@game.current_pet.energy).to eq(1)
     end
 
     it "will not perform activity" do
       @game.current_pet.energy = 1
-      @game.play_pet(@game.activities[0].name)
+      @game.do_activity(@game.activities[0].name)
 
       expect(@game.current_pet.energy).to eq(1)
     end
