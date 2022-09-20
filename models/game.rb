@@ -20,7 +20,7 @@ class Game
   end
 
   def select_pet(pet_name)
-    GameLogger.already_selected_pet if pet_name == @current_pet.name
+    GameLogger.already_selected_pet(@current_pet.name) if pet_name.downcase == @current_pet.name.downcase
     selected_pet = @pets.select { |pet| pet.name.downcase == pet_name}[0]
     @current_pet = selected_pet
     GameLogger.select_pet(selected_pet.name)
