@@ -1,6 +1,3 @@
-require_relative '../game.rb'
-require 'stringio'
-
 describe Game do 
   
   before(:each) do

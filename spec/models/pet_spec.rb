@@ -1,5 +1,3 @@
-require_relative '../pet.rb'
-
 describe Pet do
 
   before(:each) do 

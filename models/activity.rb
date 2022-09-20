@@ -1,4 +1,3 @@
-
 class Activity
 
     attr_accessor :name, :energy

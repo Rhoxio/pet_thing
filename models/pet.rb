@@ -1,12 +1,3 @@
-require 'awesome_print'
-require_relative 'pet_logger'
-
-$interval = 2
-SLEEP_ENERGY = 40
-PLAY_ENERGY = 20
-EAT_ENERGY = 20
-
-
 class Pet
 
   attr_accessor :name, :species, :is_sleeping, :energy

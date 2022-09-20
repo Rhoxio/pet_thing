@@ -1,5 +1,3 @@
-require_relative '../food.rb'
-
 describe Food do 
 
     before(:each) do 

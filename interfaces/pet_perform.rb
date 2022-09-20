@@ -1,4 +1,3 @@
-
 module PetPerform
     def self.perform(attributes={})
         pet = attributes[:pet]

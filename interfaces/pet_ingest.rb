@@ -1,4 +1,3 @@
-
 module PetIngest
     def self.call(attributes={})
         pet = attributes[:pet]

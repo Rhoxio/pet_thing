@@ -1,7 +1,3 @@
-$puts_mode = true
-
-require "colorize"
-
 class PetLogger
   attr_accessor :pet
 

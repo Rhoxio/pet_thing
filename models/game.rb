@@ -1,10 +1,3 @@
-require_relative 'food'
-require_relative 'pet'
-require_relative 'pet_ingest'
-require_relative 'pet_perform'
-require_relative 'activity'
-require 'colorize'
-
 class Game
 
   attr_accessor :current_pet, :foods, :activities, :choice, :pets
@@ -27,25 +20,15 @@ class Game
   end
 
   def select_pet(pet_name)
+    GameLogger.already_selected_pet if pet_name == @current_pet.name
     selected_pet = @pets.select { |pet| pet.name.downcase == pet_name}[0]
     @current_pet = selected_pet
-    puts "#{@current_pet.name} selected!"
+    GameLogger.select_pet(selected_pet.name)
     commands["status"].call 
   end
 
   def list_pets
-    available_pets = @pets.select do |pet|
-      pet != @current_pet
-    end
-
-    unavailable_pets = @pets.select do |pet|
-      pet == @current_pet
-    end
-
-    puts "Please select a pet below".blue
-
-    available_pets.each {|pet| puts "Name: #{pet.name} | Species: #{pet.species}".green}
-    unavailable_pets.each {|pet| puts "Name: #{pet.name} | Species: #{pet.species}".red}
+    GameLogger.list_pets(@pets, @current_pet)
   end
 
   def add_pet(given_pet)
@@ -62,9 +45,9 @@ class Game
   end
 
   def create_pet
-    puts "Enter a name for a pet:".blue
+    GameLogger.prompt_pet_name
     pet_name = gets.chomp.capitalize
-    puts "Enter an energy level for a pet:".blue
+    GameLogger.prompt_pet_species
     species = gets.chomp.to_sym
 
 
@@ -77,13 +60,12 @@ class Game
       ap values
       pet = Pet.new(values)
     rescue => e
-      puts "pet was not able to be created:".red
-      p e
+      GameLogger.pet_not_added(e)
       create_pet
     else
       @pets << pet
-      puts "#{pet.name} of species #{pet.species} has been added!".green
-      @current_pet = pet if @pets.length < 0
+      GameLogger.pet_added(pet)
+      @current_pet = pet && @selected_pet = pet if @pets.length == 1
       return true 
     end
   end
@@ -120,9 +102,9 @@ class Game
   end
 
   def create_food()
-    puts "Enter a name for a food:".blue
+    GameLogger.prompt_food_name
     food_name = gets.chomp.capitalize
-    puts "Enter an energy level for a food:".blue
+    GameLogger.prompt_food_energy
     energy_value = gets.chomp.to_i
 
     values = {
@@ -131,24 +113,22 @@ class Game
     }
 
     begin
-      ap values
       food = Food.new(values)
     rescue => e
-      puts "Food was not able to be created:".red
-      p e
+      GameLogger.food_not_added(e)
       create_food
     else
       @foods << food
-      puts "#{food.name} with an energy level of #{food.energy} has been added!".green
+      GameLogger.food_added(food)
       return true      
     end
     
   end
 
   def create_activity()
-    puts "Enter a name for a activity:".blue
+    GameLogger.prompt_activity_name
     activity_name = gets.chomp.capitalize
-    puts "Enter an energy level for a activity:".blue
+    GameLogger.prompt_activity_energy
     energy_value = gets.chomp.to_i
     
     values = {
@@ -160,12 +140,11 @@ class Game
       ap values
       activity = Activity.new(values)
     rescue => e
-      puts "activity was not able to be created:".red
-      p e
+      GameLogger.activity_not_added(e)
       create_activity
     else
       @activities << activity
-      puts "#{activity.name} with an energy level of #{activity.energy} has been added!".green
+      GameLogger.activity_added(activity)
       return true      
     end
     
@@ -177,8 +156,9 @@ class Game
     loop do
       commands["choose pet"].call if @current_pet == nil
       @choice = gets.chomp.downcase
-      warn("No foods are present yet - add some before moving on.") && next if (@foods.length == 0)
-      warn("No acitivites are present yet - add some before moving on.") && next if (@activities.length == 0) 
+      warn_about_missing_foods && next if (@foods.length == 0)
+      warn_about_missing_activities && next if (@activities.length == 0) 
+      warn_about_no_selected_pet && next if (@current_pet == nil)
       if @foods.any?{|food| food.name.downcase == @choice}
         commands(@choice)["feed"].call
       elsif @activities.any?{|activity| activity.name.downcase == @choice}
@@ -187,7 +167,7 @@ class Game
         commands(@choice)["select pet"].call
       else
         commands[@choice].call if !!commands[@choice]
-        commands[""].call if !commands[@choice]
+        commands["menu"].call if !commands[@choice]
         break if @choice == "exit"
       end
     end
@@ -201,47 +181,40 @@ class Game
       "add activity" => Proc.new{create_activity},
       "feed" => Proc.new{feed_pet(args)},
       "play" => Proc.new{play_pet(args)},
-      "welcome"=> Proc.new{puts "Welcome to Tomogotchi Land".blue},
-      "menu"=> Proc.new{list_menu},
+      "welcome"=> Proc.new{GameLogger.welcome},
+      "foods"=> Proc.new{list_foods},
       "activities"=> Proc.new{list_activities},
-      "list pets"=> Proc.new{list_pets},
+      "pets"=> Proc.new{list_pets},
       "select pet"=> Proc.new{select_pet(args)},
       "create pet"=> Proc.new{create_pet},
       "choose pet"=> Proc.new{choose_pet},
       "rest"=> Proc.new{rest},
-      "exit"=> Proc.new{puts "Thanks for coming to Tomogotchi Land".green},
-      ""=> Proc.new{puts "Please make a choice between status, welcome, menu, activities, rest and exit".green}
+      "exit"=> Proc.new{GameLogger.exit},
+      "menu"=> Proc.new{GameLogger.menu}
     }
   end
 
-  def list_menu()
-    ap "Here's the menu"
-    ap "Please select food below by typing the name of it"
-    @foods.each {|food| ap "Name: #{food.name} : Energy: #{food.energy}"}
+  def list_foods()
+    GameLogger.list_foods(@foods)
   end
 
   def list_activities()
-    available_activities = @activities.select do |activity|
-      activity.energy < @current_pet.energy
-    end
+    ap @current_pet
+    GameLogger.list_activities(@activities, @current_pet)
+  end
 
-    unavailable_activities = @activities.select do |activity|
-      activity.energy >= @current_pet.energy
-    end    
+  private
 
-    ap "Please select an activity below by typing the name of it"
+  def warn_about_missing_foods
+    warn("No foods are present yet - add some before moving on.")
+  end
 
-    available_activities.each {|activity| puts "Activity: #{activity.name} | Energy: #{activity.energy}".green}
-    unavailable_activities.each {|activity| puts "Activity: #{activity.name} | Energy: #{activity.energy}".red}
+  def warn_about_missing_activities
+    warn("No acitivites are present yet - add some before moving on.")
+  end
+
+  def warn_about_no_selected_pet
+    warn("No pet selected")
+    commands["list pets"].call
   end
 end
-
-pet = Pet.new({name: "Jake", species: :horse})
-game = Game.new
-# game.current_pet = pet
-# game.current_pet.energy = 80
-game.foods = [Food.new(name: "Burger", energy: 20), Food.new(name: "Sushi", energy: 30)]
-game.activities = [Activity.new(name: "Run", energy: 40), Activity.new(name: "Marathon", energy: 50), Activity.new(name: "Walk", energy: 10)]
-new_pet = Pet.new({name: "Bob", species: :crocodile})
-# game.pets = [pet, new_pet]
-game.start

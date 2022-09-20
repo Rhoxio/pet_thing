@@ -1,4 +1,3 @@
-
 class Food
 
     attr_accessor :name, :energy

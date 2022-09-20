@@ -1,7 +1,3 @@
-require_relative '../activity.rb'
-require_relative '../pet.rb'
-require_relative '../pet_perform.rb'
-
 describe PetPerform do
 
     before(:each) do

@@ -1,5 +1,3 @@
-require_relative '../activity.rb'
-
 describe Activity do 
   describe "errors" do 
 
